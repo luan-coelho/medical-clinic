@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medical-clinic
+    username: postgres
+    password: sigfpto
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  mvc:
+    path match:
+      matching-strategy: ant-path-matcher
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
