@@ -1,5 +1,6 @@
 package br.cliniconect.medical.service.patient;
 
+import br.cliniconect.medical.datafilter.PatientFieldsFilter;
 import br.cliniconect.medical.domain.model.patient.Patient;
 import br.cliniconect.medical.domain.repository.PatientRepository;
 import br.cliniconect.medical.exception.BadRequestException;
@@ -20,8 +21,8 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final ModelMapper mapper;
 
-    public Page<Patient> findAllPatient(Pageable pageable) {
-        return patientRepository.findAll(pageable);
+    public Page<Patient> findAllPatient(PatientFieldsFilter filters, Pageable pageable) {
+        return patientRepository.findAll(filters.toSpec(), pageable);
     }
 
     public Patient findPatientById(Long id) {

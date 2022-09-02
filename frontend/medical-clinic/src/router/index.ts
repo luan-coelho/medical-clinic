@@ -23,4 +23,9 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  document.title = to.name ? to.name.toString() : 'Cliniconect';
+  next();
+});
+
 export default router;

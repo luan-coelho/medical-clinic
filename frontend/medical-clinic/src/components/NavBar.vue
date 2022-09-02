@@ -1,20 +1,20 @@
 <template>
   <nav
-    class="px-2 py-2.5 uppercase bg-gray-50s dark:bg-root-color-dark w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600"
+    class="uppercase dark:bg-root-color-dark h-14 shadow-lg dark:border-gray-600 p-2"
   >
-    <div class="container flex justify-around items-center">
+    <div class="h-full flex justify-around items-center">
       <img
-        class="self-center whitespace-nowrap"
-        src="https://lh5.googleusercontent.com/ZlV2koB7Ou5w9Z7EuKVpnQVHFaw85Nkn143iHliGMAutrl6xekZrz9smO5qazGeHd7nTHQ=w16383"
-        alt=""
+        class="ml-5 self-center whitespace-nowrap w-56"
+        src="@/assets/cliniconect.png"
+        alt="Cliniconect Logo"
       />
 
       <div
-        class="items-center justify-center w-full flex md:w-auto md:order-1"
+        class="items-center justify-center w-full flex md:w-auto order-1"
         id="navbar-sticky"
       >
         <ul
-          class="flex flex-row items-center justify-center sx:p-2 sm:p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-root-color-dark dark:border-gray-700"
+          class="flex flex-row items-center justify-center bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-root-color-dark dark:border-gray-700"
         >
           <li>
             <router-link
@@ -23,6 +23,14 @@
               >Patients</router-link
             >
           </li>
+          <li>
+            <Button
+              @click="activeDarkMode()"
+              class="text-black dark:text-white"
+              icon="pi pi-moon"
+              iconPos="right"
+            />
+          </li>
         </ul>
       </div>
     </div>
@@ -30,11 +38,30 @@
 </template>
 
 <script lang="ts">
+  import Button from 'primevue/button';
   import { defineComponent } from 'vue';
 
   export default defineComponent({
+    components: {
+      Button,
+    },
     data() {
       return {};
+    },
+    methods: {
+      activeDarkMode() {
+        if (
+          (document.querySelector('html') as HTMLElement).classList.contains(
+            'dark'
+          )
+        ) {
+          (document.querySelector('html') as HTMLElement).classList.remove(
+            'dark'
+          );
+        } else {
+          (document.querySelector('html') as HTMLElement).classList.add('dark');
+        }
+      },
     },
   });
 </script>

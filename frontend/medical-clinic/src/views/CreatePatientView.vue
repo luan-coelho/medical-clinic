@@ -2,14 +2,14 @@
   <div class="flex items-center justify-center md:mt-0">
     <form
       @submit.prevent="savePatient()"
-      class="mt-10 md:w-2/4 sm:9/12 sx:w-11/12"
+      class="mt-5 mb-20 md:w-2/4 sm:9/12 sx:w-11/12"
     >
       <div class="shadow-2xl sm:rounded-md">
         <n-tabs type="line" animated>
           <n-tab-pane name="Basic Data" tab="Basic Data">
             <div class="bg-white px-4 py-5 sm:p-6">
               <div class="grid col-span-6 grid-cols-6 gap-6">
-                <div class="md:col-span-6 sm:col-span-6">
+                <div class="col-span-6 sm:col-span-6">
                   <label
                     for="name"
                     class="block text-sm font-medium text-gray-700"
@@ -132,11 +132,17 @@
                 v-for="(addressCard, index) in patient.address"
                 :key="index"
               >
-                <div>
+                <div class="flex flex-col">
                   <h3 class="text-lg font-bold">
                     {{ addressCard.street }}
                   </h3>
-                  {{ addressCard.city + '-' + addressCard.state }}
+                  <span> Number: {{ addressCard.number }} </span>
+                  <div>
+                    <span class="mr-3"> {{ addressCard.zipCode }} </span
+                    ><span class="italic"
+                      >{{ addressCard.city + '-' + addressCard.state }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="mt-2">
@@ -357,6 +363,8 @@
           this.patient.address.push(this.address);
           this.Toast(ToastType.SUCESS, 'Address added successfully');
         }
+
+        console.log(this.address);
 
         this.cardAddressIndex;
         this.address = {} as Address;

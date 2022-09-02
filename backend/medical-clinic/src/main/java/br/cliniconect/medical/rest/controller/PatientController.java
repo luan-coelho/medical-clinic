@@ -1,5 +1,6 @@
 package br.cliniconect.medical.rest.controller;
 
+import br.cliniconect.medical.datafilter.PatientFieldsFilter;
 import br.cliniconect.medical.domain.model.patient.Patient;
 import br.cliniconect.medical.rest.dto.patient.CreatePatientDTO;
 import br.cliniconect.medical.rest.dto.patient.ResponsePatientDTO;
@@ -24,8 +25,8 @@ public class PatientController {
     private final ModelMapper mapper;
 
     @GetMapping()
-    public ResponseEntity<Page<ResponsePatientDTO>> getAllPatient(Pageable pageable) {
-        return ResponseEntity.ok(patientService.findAllPatient(pageable)
+    public ResponseEntity<Page<ResponsePatientDTO>> getAllPatient(PatientFieldsFilter filters, Pageable pageable) {
+        return ResponseEntity.ok(patientService.findAllPatient(filters, pageable)
                 .map(patient -> mapper.map(patient, ResponsePatientDTO.class)));
     }
 
