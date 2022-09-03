@@ -23,6 +23,7 @@ import Button from 'primevue/button';
 import Column from 'primevue/column';
 import ConfirmationService from 'primevue/confirmationservice';
 import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 
@@ -37,4 +38,5 @@ createApp(App)
   .component('Column', Column)
   .component('InputText', InputText)
   .component('Button', Button)
+  .component('Dialog', Dialog)
   .mount('#app');

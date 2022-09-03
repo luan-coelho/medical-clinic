@@ -42,7 +42,7 @@
             <Button
               @click="$router.push('/save')"
               label="New Patient"
-              class="p-button-success"
+              class="p-button-success p-button-rounded"
             />
           </div>
         </div>
@@ -53,22 +53,33 @@
       <Column field="name" header="Name"></Column>
       <Column field="cpf" header="CPF"></Column>
       <Column field="email" header="Email"></Column>
-      <Column field="gender" header="Gender"></Column>
-      <Column field="birthday" header="Birthday"></Column>
       <Column>
         <template #body="{ data }">
           <Button
+            @click="
+              display = true;
+              patient = data;
+            "
+            icon="pi pi-arrow-up-right"
+            class="p-button-help mr-2 p-button-rounded"
+          />
+          <Button
             @click="$router.push('/edit/' + data.id)"
             icon="pi pi-pencil"
-            class="p-button-info mr-2"
-          /><Button
+            class="p-button-info mr-2 p-button-rounded"
+          />
+          <Button
             @click="deleteDialog(data.id)"
             icon="pi pi-trash"
-            class="p-button-danger"
+            class="p-button-danger p-button-rounded"
           />
         </template>
       </Column>
     </DataTable>
+
+    <Dialog header="Patient Data" v-model:visible="display" :modal="true">
+      <ShowPaTientData :patient="patient" />
+    </Dialog>
 
     <ConfirmDialog></ConfirmDialog>
 
@@ -83,6 +94,7 @@
 </template>
 
 <script lang="ts">
+  import ShowPaTientData from '@/components/ShowPatientData.vue';
   import Patient from '@/model/Patient';
   import toast from '@/utils/Toast';
   import { ToastType } from '@/utils/ToastType';
@@ -105,10 +117,12 @@
       Column,
       Dropdown,
       ConfirmDialog,
+      ShowPaTientData,
     },
     data() {
       return {
         patients: [] as Patient[],
+        patient: {} as Patient,
         inputValue: '',
         toast,
         pagination: {
@@ -122,6 +136,7 @@
           { name: 'Email', value: 'email' },
           { name: 'CPF', value: 'cpf' },
         ] as patientFieldFilter[],
+        display: false,
       };
     },
     methods: {

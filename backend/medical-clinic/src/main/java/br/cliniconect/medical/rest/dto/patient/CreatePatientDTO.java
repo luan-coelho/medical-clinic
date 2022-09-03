@@ -22,6 +22,8 @@ public class CreatePatientDTO {
     @NotBlank(message = "Inform a CPF")
     @CPF(message = "Please provide a valid CPF")
     private String cpf;
+    @NotBlank(message = "inform the cell phone number")
+    private String cellPhone;
     @NotNull(message = "inform the gender")
     private Gender gender;
     @Email(message = "Please provide a valid email")

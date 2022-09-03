@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,8 +36,11 @@ public class Patient extends DefaultEntity {
     private String cpf;
     @Column(unique = true)
     private String email;
+    @NotBlank(message = "inform the cell phone number")
+    private String cellPhone;
     @Past(message = "Enter a date of birth earlier than today")
     private LocalDate birthday;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "patient_address")
     private List<Address> address;
 }

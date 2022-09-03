@@ -2,14 +2,14 @@
   <div class="flex items-center justify-center md:mt-0">
     <form
       @submit.prevent="updatePatient()"
-      class="mt-10 md:w-2/4 sm:9/12 sx:w-11/12"
+      class="mt-5 mb-20 md:w-2/4 sm:9/12 sx:w-11/12"
     >
       <div class="shadow-2xl sm:rounded-md">
         <n-tabs type="line" animated>
           <n-tab-pane name="Basic Data" tab="Basic Data">
             <div class="bg-white px-4 py-5 sm:p-6">
               <div class="grid col-span-6 grid-cols-6 gap-6">
-                <div class="md:col-span-6 sm:col-span-6">
+                <div class="col-span-6 sm:col-span-6">
                   <label
                     for="name"
                     class="block text-sm font-medium text-gray-700"
@@ -56,6 +56,22 @@
                     name="email"
                     id="email"
                     placeholder="cliniconect@exemplo.com"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div class="col-span-3 sm:col-span-2">
+                  <label
+                    for="phone"
+                    class="block text-sm font-medium text-gray-700"
+                    >Cell Phone</label
+                  >
+                  <input
+                    v-model="patient.cellPhone"
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    maxlength="11"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -132,11 +148,17 @@
                 v-for="(addressCard, index) in patient.address"
                 :key="index"
               >
-                <div>
+                <div class="flex flex-col">
                   <h3 class="text-lg font-bold">
                     {{ addressCard.street }}
                   </h3>
-                  {{ addressCard.city + '-' + addressCard.state }}
+                  <span> Number: {{ addressCard.number }} </span>
+                  <div>
+                    <span class="mr-3"> {{ addressCard.zipCode }} </span
+                    ><span class="italic"
+                      >{{ addressCard.city + '-' + addressCard.state }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="mt-2">
@@ -189,12 +211,13 @@
                     <label
                       for="postal-code"
                       class="block text-sm font-medium text-gray-700"
-                      >ZIP code</label
+                      >ZIP code *</label
                     >
                     <input
+                      @blur="findAddressByCep()"
                       type="text"
                       v-model="address.zipCode"
-                      maxlength="9"
+                      maxlength="8"
                       name="postal-code"
                       id="postal-code"
                       autocomplete="postal-code"
@@ -206,7 +229,7 @@
                     <label
                       for="street-address"
                       class="block text-sm font-medium text-gray-700"
-                      >Street</label
+                      >Street *</label
                     >
                     <input
                       type="text"
@@ -217,11 +240,27 @@
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
+
+                  <div class="col-span-4">
+                    <label
+                      for="street-district"
+                      class="block text-sm font-medium text-gray-700"
+                      >District *</label
+                    >
+                    <input
+                      type="text"
+                      v-model="address.district"
+                      name="street-district"
+                      id="street-district"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+
                   <div class="col-span-2 sm:col-span-3 lg:col-span-2">
                     <label
                       for="number"
                       class="block text-sm font-medium text-gray-700"
-                      >Number</label
+                      >Number *</label
                     >
                     <input
                       type="text"
@@ -252,7 +291,7 @@
                     <label
                       for="city"
                       class="block text-sm font-medium text-gray-700"
-                      >City</label
+                      >City *</label
                     >
                     <input
                       type="text"
@@ -268,7 +307,7 @@
                     <label
                       for="region"
                       class="block text-sm font-medium text-gray-700"
-                      >State</label
+                      >State *</label
                     >
                     <input
                       type="text"
@@ -318,7 +357,6 @@
   import { ToastType } from '@/utils/ToastType';
   import axios from 'axios';
   import { defineComponent, ref } from 'vue';
-
   export default defineComponent({
     data() {
       return {
@@ -336,8 +374,6 @@
     },
     methods: {
       async updatePatient() {
-        console.log(this.patient.birthday);
-
         return await axios
           .put(
             'http://localhost:8080/api/patient/' + this.$route.params.id,
@@ -353,6 +389,9 @@
           });
       },
       addAddress() {
+        if (!this.validateAddressForm()) {
+          return;
+        }
         if (this.editEnabled) {
           this.patient.address[this.cardAddressIndex] = this.address;
           this.Toast(ToastType.SUCESS, 'Address updated successfully');
@@ -360,6 +399,8 @@
           this.patient.address.push(this.address);
           this.Toast(ToastType.SUCESS, 'Address added successfully');
         }
+
+        console.log(this.address);
 
         this.cardAddressIndex;
         this.address = {} as Address;
@@ -387,10 +428,39 @@
           this.Toast(ToastType.DANGER, 'Provide a valid email');
         }
       },
+      validateAddressForm(): boolean {
+        if (
+          !this.address.zipCode ||
+          !this.address.street ||
+          !this.address.district ||
+          !this.address.number ||
+          !this.address.city ||
+          !this.address.state
+        ) {
+          this.Toast(ToastType.DANGER, 'Provide all mandatory address data');
+          return false;
+        }
+        return true;
+      },
       editAddress() {
         this.showModal = true;
       },
-
+      async findAddressByCep() {
+        if (this.address.zipCode.length == 8) {
+          return await axios
+            .get(`https://viacep.com.br/ws/${this.address.zipCode}/json/`)
+            .then((response) => {
+              console.log(response);
+              this.address.street = response.data.logradouro;
+              this.address.district = response.data.bairro;
+              this.address.city = response.data.localidade;
+              this.address.state = response.data.uf;
+            })
+            .catch((error) => {
+              console.warn(error);
+            });
+        }
+      },
       async findPatientById() {
         await axios
           .get('http://localhost:8080/api/patient/' + this.$route.params.id)
@@ -403,7 +473,7 @@
           });
       },
     },
-    beforeMount() {
+    mounted() {
       this.findPatientById();
     },
   });

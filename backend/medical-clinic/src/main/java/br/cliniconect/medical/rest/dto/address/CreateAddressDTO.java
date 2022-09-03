@@ -11,6 +11,8 @@ public class CreateAddressDTO {
 
     @NotBlank(message = "inform the street")
     private String street;
+    @NotBlank(message = "inform the district")
+    private String district;
     @NotBlank(message = "inform the number")
     private String number;
     @NotBlank(message = "inform the city")

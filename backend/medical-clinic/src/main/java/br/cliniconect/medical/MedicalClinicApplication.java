@@ -9,7 +9,6 @@ public class MedicalClinicApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MedicalClinicApplication.class, args);
-        ScriptSql.run("import.sql");
     }
 
 }

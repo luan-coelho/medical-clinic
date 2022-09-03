@@ -8,6 +8,7 @@ import lombok.Setter;
 public class ResponseAddressDTO {
 
     private String street;
+    private String district;
     private String number;
     private String city;
     private String state;

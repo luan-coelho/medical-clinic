@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/medical-clinic
+    url: jdbc:postgresql://localhost:5432/medicaldb
     username: postgres
     password: sigfpto
     driver-class-name: org.postgresql.Driver
@@ -10,7 +10,9 @@ spring:
       ddl-auto: create
     show-sql: true
     properties:
+      hibernate.hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
       hibernate.format_sql: true
+    open-in-view: false
   mvc:
     path match:
       matching-strategy: ant-path-matcher

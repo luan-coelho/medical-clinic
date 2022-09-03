@@ -6,6 +6,7 @@ export default interface Patient {
   name: string;
   email: string;
   cpf: string;
+  cellPhone: string;
   gender: Gender;
   birthday: Date;
   address: Address[];
