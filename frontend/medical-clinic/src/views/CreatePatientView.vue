@@ -351,11 +351,11 @@
 <script lang="ts">
   import Address from '@/model/Address';
   import Patient from '@/model/Patient';
+  import axios from '@/utils/axios';
   import CpfValidator from '@/utils/CpfValidator';
   import EmailValidator from '@/utils/EmailValidator';
   import Toast from '@/utils/Toast';
   import { ToastType } from '@/utils/ToastType';
-  import axios from 'axios';
   import { defineComponent, ref } from 'vue';
 
   export default defineComponent({
@@ -376,7 +376,7 @@
     methods: {
       async savePatient() {
         return await axios
-          .post('http://localhost:8080/api/patient', this.patient)
+          .post('/patient', this.patient)
           .then(() => {
             this.Toast(ToastType.SUCESS, 'Patient saved successfully');
             this.cleanForm();

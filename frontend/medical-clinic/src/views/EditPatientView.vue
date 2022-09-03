@@ -351,11 +351,11 @@
 <script lang="ts">
   import Address from '@/model/Address';
   import Patient from '@/model/Patient';
+  import axios from '@/utils/axios';
   import CpfValidator from '@/utils/CpfValidator';
   import EmailValidator from '@/utils/EmailValidator';
   import Toast from '@/utils/Toast';
   import { ToastType } from '@/utils/ToastType';
-  import axios from 'axios';
   import { defineComponent, ref } from 'vue';
   export default defineComponent({
     data() {
@@ -375,10 +375,7 @@
     methods: {
       async updatePatient() {
         return await axios
-          .put(
-            'http://localhost:8080/api/patient/' + this.$route.params.id,
-            this.patient
-          )
+          .put('/patient/' + this.$route.params.id, this.patient)
           .then(() => {
             this.Toast(ToastType.SUCESS, 'Patient successfully updated');
             this.cleanForm();
@@ -463,7 +460,7 @@
       },
       async findPatientById() {
         await axios
-          .get('http://localhost:8080/api/patient/' + this.$route.params.id)
+          .get('/patient/' + this.$route.params.id)
           .then((response) => {
             this.patient = response.data;
           })

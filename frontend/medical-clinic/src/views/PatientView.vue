@@ -96,9 +96,9 @@
 <script lang="ts">
   import ShowPaTientData from '@/components/ShowPatientData.vue';
   import Patient from '@/model/Patient';
+  import axios from '@/utils/axios';
   import toast from '@/utils/Toast';
   import { ToastType } from '@/utils/ToastType';
-  import axios from 'axios';
   import Column from 'primevue/column';
   import ConfirmDialog from 'primevue/confirmdialog';
   import DataTable from 'primevue/datatable';
@@ -143,11 +143,9 @@
       async getAllPatient(): Promise<void> {
         return await axios
           .get(
-            `http://localhost:8080/api/patient?page=${
-              this.pagination.pageNumber - 1
-            }&size=${this.pagination.size}&${this.selectedFilter.value}=${
-              this.inputValue
-            }`
+            `/patient?page=${this.pagination.pageNumber - 1}&size=${
+              this.pagination.size
+            }&${this.selectedFilter.value}=${this.inputValue}`
           )
           .then((response) => {
             this.patients = response.data.content;
@@ -160,7 +158,7 @@
       },
       async deletePatient(id: number) {
         return await axios
-          .delete('http://localhost:8080/api/patient/' + id)
+          .delete('/patient/' + id)
           .then(() => {
             this.getAllPatient();
             this.toast(ToastType.SUCESS, 'Patient successfully deleted');
